@@ -1,0 +1,26 @@
+.navbar {
+  background: rgba(18, 18, 32, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+.navbarUser {
+  color: #00f0ff;
+  margin-right: 1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.navbarButton {
+  margin-left: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.navbarButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 240, 255, 0.2);
+}

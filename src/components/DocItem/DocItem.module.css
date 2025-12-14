@@ -1,0 +1,60 @@
+.docItemWrapper {
+  max-width: 100%;
+}
+
+.docItemRow {
+  display: flex;
+  gap: 2rem;
+  max-width: 100%;
+}
+
+.docItemCol {
+  flex: 1 1 70%;
+  min-width: 0; /* Allows flex item to shrink below content size */
+}
+
+.chatCol {
+  flex: 1 1 30%;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chatContainer {
+  background: rgba(18, 18, 32, 0.7);
+  border: 1px solid rgba(0, 240, 255, 0.15);
+  border-radius: 12px;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+  height: fit-content;
+  position: sticky;
+  top: 2rem;
+}
+
+.chatTitle {
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+  color: #00f0ff;
+  background: linear-gradient(to right, #00f0ff, #a87bff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 1.2rem;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 996px) {
+  .docItemRow {
+    flex-direction: column;
+  }
+
+  .docItemCol, .chatCol {
+    flex: 1 1 auto;
+    min-width: auto;
+  }
+
+  .chatCol {
+    order: -1; /* Put chat at the top on mobile */
+  }
+}

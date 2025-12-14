@@ -1,0 +1,8 @@
+{
+  "label": "Chapter 3: Unity Visualization and Integration",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Unity basics for robotics, advanced visualization, and integration with ROS 2."
+  }
+}

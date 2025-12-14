@@ -1,0 +1,292 @@
+/**
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @format
+ */
+
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+:root {
+  /* Dark mode as default - override light theme */
+  --ifm-color-primary: #00f0ff; /* neon blue */
+  --ifm-color-primary-dark: #00c8d6; /* darker neon blue */
+  --ifm-color-primary-darker: #00b8c6; /* even darker neon blue */
+  --ifm-color-primary-darkest: #0098a6; /* darkest neon blue */
+  --ifm-color-primary-light: #20f2ff; /* lighter neon blue */
+  --ifm-color-primary-lighter: #40f4ff; /* more lighter neon blue */
+  --ifm-color-primary-lightest: #60f6ff; /* lightest neon blue */
+  --ifm-color-secondary: #a87bff; /* soft purple */
+  --ifm-color-secondary-dark: #8a5bff; /* darker purple */
+  --ifm-background-color: #0a0a12; /* deep space background */
+  --ifm-background-surface-color: #121220; /* surface background */
+  --ifm-font-color-base: #e0e0ff; /* light text */
+  --ifm-font-color-base-inverse: #0a0a12; /* dark text */
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 240, 255, 0.15);
+  --ifm-global-radius: 8px;
+  --ifm-global-shadow-lw: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --ifm-global-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --ifm-global-shadow-tl: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* Light theme override - not used since we want dark by default */
+[data-theme='light'] {
+  --ifm-color-primary: #00f0ff;
+  --ifm-color-primary-dark: #00c8d6;
+  --ifm-color-primary-darker: #00b8c6;
+  --ifm-color-primary-darkest: #0098a6;
+  --ifm-color-primary-light: #20f2ff;
+  --ifm-color-primary-lighter: #40f4ff;
+  --ifm-color-primary-lightest: #60f6ff;
+  --ifm-color-secondary: #a87bff;
+  --ifm-background-color: #0a0a12;
+  --ifm-background-surface-color: #121220;
+  --ifm-font-color-base: #e0e0ff;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 240, 255, 0.15);
+}
+
+/* Dark theme - primary theme */
+[data-theme='dark'] {
+  --ifm-color-primary: #00f0ff; /* neon blue */
+  --ifm-color-primary-dark: #00c8d6; /* darker neon blue */
+  --ifm-color-primary-darker: #00b8c6; /* even darker neon blue */
+  --ifm-color-primary-darkest: #0098a6; /* darkest neon blue */
+  --ifm-color-primary-light: #20f2ff; /* lighter neon blue */
+  --ifm-color-primary-lighter: #40f4ff; /* more lighter neon blue */
+  --ifm-color-primary-lightest: #60f6ff; /* lightest neon blue */
+  --ifm-color-secondary: #a87bff; /* soft purple */
+  --ifm-color-secondary-dark: #8a5bff; /* darker purple */
+  --ifm-background-color: #0a0a12; /* deep space background */
+  --ifm-background-surface-color: #121220; /* surface background */
+  --ifm-font-color-base: #e0e0ff; /* light text */
+  --ifm-font-color-base-inverse: #0a0a12; /* dark text */
+  --docusaurus-highlighted-code-line-bg: rgba(0, 240, 255, 0.15);
+}
+
+/* Custom styles for AI/Robotics theme */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: linear-gradient(135deg, #0a0a12 0%, #0d0d1a 50%, #121220 100%);
+  background-attachment: fixed;
+}
+
+/* Custom navbar styling */
+.navbar {
+  background: rgba(10, 10, 18, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+  box-shadow: var(--ifm-global-shadow-md);
+}
+
+/* Custom sidebar styling */
+.sidebar {
+  background: rgba(18, 18, 32, 0.7);
+  border-right: 1px solid rgba(0, 240, 255, 0.1);
+}
+
+/* Custom doc content styling */
+.docItemContainer {
+  max-width: 800px; /* Wider reading layout */
+}
+
+/* Custom cards and content blocks */
+.card {
+  background: rgba(18, 18, 32, 0.7);
+  border: 1px solid rgba(0, 240, 255, 0.15);
+  border-radius: var(--ifm-global-radius);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.card:hover {
+  border-color: rgba(0, 240, 255, 0.4);
+  box-shadow: 0 8px 24px rgba(0, 240, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Custom buttons */
+.button {
+  border-radius: 6px;
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  background: linear-gradient(45deg, var(--ifm-color-primary), var(--ifm-color-secondary));
+  border: none;
+  color: white;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 240, 255, 0.3);
+  color: white;
+}
+
+/* Custom code blocks */
+.codeBlockContainer {
+  border-radius: var(--ifm-global-radius);
+  overflow: hidden;
+  border: 1px solid rgba(0, 240, 255, 0.1);
+  box-shadow: var(--ifm-global-shadow-lw);
+}
+
+/* Custom admonitions */
+.admonition {
+  border-radius: var(--ifm-global-radius);
+  border-left-width: 4px;
+  box-shadow: var(--ifm-global-shadow-lw);
+}
+
+/* Custom headers */
+h1, h2, h3, h4, h5, h6 {
+  background: linear-gradient(to right, var(--ifm-color-primary), var(--ifm-color-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+/* Custom links */
+a {
+  position: relative;
+}
+
+a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--ifm-color-primary);
+  transition: width 0.3s ease;
+}
+
+a:hover::after {
+  width: 100%;
+}
+
+/* Custom blockquotes */
+blockquote {
+  border-left: 3px solid var(--ifm-color-primary);
+  background: rgba(0, 240, 255, 0.05);
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 0 8px 8px 0;
+}
+
+/* Custom tables */
+table {
+  border-radius: var(--ifm-global-radius);
+  overflow: hidden;
+}
+
+table th, table td {
+  border: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+/* Custom horizontal rules */
+hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--ifm-color-primary), transparent);
+  margin: 2rem 0;
+}
+
+/* Custom footer */
+.footer {
+  background: rgba(10, 10, 18, 0.95);
+  border-top: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+/* Custom search */
+.navbar__search-input {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  border-radius: 6px;
+  color: var(--ifm-font-color-base);
+}
+
+.navbar__search-input::placeholder {
+  color: rgba(224, 224, 255, 0.6);
+}
+
+/* Custom doc item container for wider layout */
+.container {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Custom sidebar items */
+.menu__list-item-collapsible .menu__link--sublist,
+.menu__link {
+  border-radius: 6px;
+  margin: 2px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.menu__link--active {
+  background: rgba(0, 240, 255, 0.1);
+  border-left: 3px solid var(--ifm-color-primary);
+}
+
+/* Custom highlight for code */
+code {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 240, 255, 0.1);
+  border-radius: 4px;
+  padding: 2px 6px;
+  color: #aaffff;
+}
+
+/* Custom pre blocks */
+pre {
+  background: rgba(0, 0, 0, 0.4) !important;
+  border: 1px solid rgba(0, 240, 255, 0.15) !important;
+  border-radius: var(--ifm-global-radius);
+  box-shadow: var(--ifm-global-shadow-lw);
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(10, 10, 18, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 240, 255, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 240, 255, 0.5);
+}

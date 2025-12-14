@@ -1,0 +1,8 @@
+{
+  "label": "Chapter 3: Navigation and Nav2 for Bipedal Movement",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Nav2 framework, path planning, and bipedal movement control for humanoid robots."
+  }
+}

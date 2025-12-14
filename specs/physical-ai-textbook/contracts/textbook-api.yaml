@@ -1,0 +1,641 @@
+openapi: 3.0.0
+info:
+  title: Physical AI & Humanoid Robotics Textbook API
+  description: API for the Physical AI & Humanoid Robotics textbook, including RAG chatbot functionality
+  version: 1.0.0
+servers:
+  - url: https://api.physical-ai-textbook.com/v1
+    description: Production server
+  - url: https://staging-api.physical-ai-textbook.com/v1
+    description: Staging server
+
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      description: Creates a new user account with the provided information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+                - name
+                - role
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: User's email address
+                password:
+                  type: string
+                  format: password
+                  minLength: 8
+                  description: User's password
+                name:
+                  type: string
+                  minLength: 1
+                  maxLength: 100
+                  description: User's full name
+                role:
+                  type: string
+                  enum: [student, engineer, hacker, educator]
+                  description: User's role/type
+                background:
+                  type: string
+                  description: User's technical background
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid input
+        '409':
+          description: User with this email already exists
+
+  /auth/login:
+    post:
+      summary: Login user
+      description: Authenticates user and returns session token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: JWT session token
+                  user:
+                    $ref: '#/components/schemas/User'
+        '401':
+          description: Invalid credentials
+
+  /modules:
+    get:
+      summary: Get all modules
+      description: Retrieve all textbook modules in order
+      responses:
+        '200':
+          description: List of modules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Module'
+
+  /modules/{moduleId}:
+    get:
+      summary: Get module by ID
+      description: Retrieve a specific module with its chapters
+      parameters:
+        - name: moduleId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Module details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModuleWithChapters'
+        '404':
+          description: Module not found
+
+  /chapters/{chapterId}:
+    get:
+      summary: Get chapter by ID
+      description: Retrieve a specific chapter with its lessons
+      parameters:
+        - name: chapterId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Chapter details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChapterWithLessons'
+        '404':
+          description: Chapter not found
+
+  /lessons/{lessonId}:
+    get:
+      summary: Get lesson by ID
+      description: Retrieve a specific lesson content
+      parameters:
+        - name: lessonId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lesson content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lesson'
+        '404':
+          description: Lesson not found
+
+  /lessons/{lessonId}/progress:
+    get:
+      summary: Get user progress for lesson
+      description: Retrieve user's progress for a specific lesson
+      parameters:
+        - name: lessonId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User progress for the lesson
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProgress'
+        '404':
+          description: Progress record not found
+    put:
+      summary: Update user progress for lesson
+      description: Update user's progress for a specific lesson
+      parameters:
+        - name: lessonId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [not-started, in-progress, completed]
+                completionPercentage:
+                  type: number
+                  minimum: 0
+                  maximum: 100
+                timeSpent:
+                  type: integer
+                  minimum: 0
+                notes:
+                  type: string
+      responses:
+        '200':
+          description: Progress updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProgress'
+
+  /search:
+    get:
+      summary: Search textbook content
+      description: Perform semantic search across textbook content
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+            description: Search query
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 5
+            description: Maximum number of results to return
+        - name: module
+          in: query
+          schema:
+            type: string
+            description: Optional module ID to limit search
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SearchResult'
+                  query:
+                    type: string
+                  took:
+                    type: number
+                    description: Time taken for search in milliseconds
+
+  /chat/sessions:
+    get:
+      summary: Get user chat sessions
+      description: Retrieve all chat sessions for the authenticated user
+      responses:
+        '200':
+          description: List of chat sessions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChatSession'
+    post:
+      summary: Create new chat session
+      description: Create a new chat session
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: Title for the new session
+      responses:
+        '201':
+          description: Chat session created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatSession'
+
+  /chat/sessions/{sessionId}/messages:
+    get:
+      summary: Get chat session messages
+      description: Retrieve all messages in a chat session
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of messages in the session
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChatMessage'
+    post:
+      summary: Send message in chat session
+      description: Send a message in a chat session and get AI response
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - content
+              properties:
+                content:
+                  type: string
+                  description: User message content
+                context:
+                  type: string
+                  enum: [full-book, selected-text]
+                  default: full-book
+                  description: Context scope for the RAG system
+      responses:
+        '200':
+          description: AI response to the message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatMessage'
+
+  /user/profile:
+    get:
+      summary: Get user profile
+      description: Retrieve the authenticated user's profile
+      responses:
+        '200':
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+    put:
+      summary: Update user profile
+      description: Update the authenticated user's profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserProfileUpdate'
+      responses:
+        '200':
+          description: Profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique user identifier
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        role:
+          type: string
+          enum: [student, engineer, hacker, educator]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Module:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        order:
+          type: integer
+        learningObjectives:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    ModuleWithChapters:
+      allOf:
+        - $ref: '#/components/schemas/Module'
+        - type: object
+          properties:
+            chapters:
+              type: array
+              items:
+                $ref: '#/components/schemas/Chapter'
+
+    Chapter:
+      type: object
+      properties:
+        id:
+          type: string
+        moduleId:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        week:
+          type: integer
+        order:
+          type: integer
+        learningObjectives:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    ChapterWithLessons:
+      allOf:
+        - $ref: '#/components/schemas/Chapter'
+        - type: object
+          properties:
+            lessons:
+              type: array
+              items:
+                $ref: '#/components/schemas/Lesson'
+
+    Lesson:
+      type: object
+      properties:
+        id:
+          type: string
+        chapterId:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        order:
+          type: integer
+        learningObjectives:
+          type: array
+          items:
+            type: string
+        physicalAIConcept:
+          type: string
+        systemArchitecture:
+          type: string
+        toolsAndSoftware:
+          type: array
+          items:
+            type: string
+        codeExamples:
+          type: array
+          items:
+            type: string
+        labInstructions:
+          type: string
+        realWorldMapping:
+          type: string
+        summary:
+          type: string
+        content:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    UserProgress:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        lessonId:
+          type: string
+        status:
+          type: string
+          enum: [not-started, in-progress, completed]
+        completionPercentage:
+          type: number
+        timeSpent:
+          type: integer
+        lastAccessed:
+          type: string
+          format: date-time
+        notes:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    SearchResult:
+      type: object
+      properties:
+        id:
+          type: string
+        lessonId:
+          type: string
+        lessonTitle:
+          type: string
+        chapterTitle:
+          type: string
+        moduleTitle:
+          type: string
+        content:
+          type: string
+        score:
+          type: number
+          description: Relevance score
+
+    ChatSession:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+          description: Null for anonymous sessions
+        title:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    ChatMessage:
+      type: object
+      properties:
+        id:
+          type: string
+        sessionId:
+          type: string
+        role:
+          type: string
+          enum: [user, assistant]
+        content:
+          type: string
+        sources:
+          type: array
+          items:
+            type: string
+          description: Source references for RAG responses
+        timestamp:
+          type: string
+          format: date-time
+        metadata:
+          type: object
+          additionalProperties: true
+
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        background:
+          type: string
+        goals:
+          type: array
+          items:
+            type: string
+        preferredLearningStyle:
+          type: string
+        languagePreference:
+          type: string
+          default: 'English'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    UserProfileUpdate:
+      type: object
+      properties:
+        background:
+          type: string
+        goals:
+          type: array
+          items:
+            type: string
+        preferredLearningStyle:
+          type: string
+        languagePreference:
+          type: string

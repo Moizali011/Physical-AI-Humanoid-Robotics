@@ -1,0 +1,8 @@
+{
+  "label": "Chapter 2: Whisper Voice-to-Action Systems",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Voice recognition with Whisper, mapping commands to actions, and voice interface implementation."
+  }
+}

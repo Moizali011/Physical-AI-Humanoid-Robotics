@@ -1,0 +1,8 @@
+{
+  "label": "Chapter 1: Physics Simulation Fundamentals",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "Core concepts of physics simulation including gravity, collisions, and environmental modeling."
+  }
+}

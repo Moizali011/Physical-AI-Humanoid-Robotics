@@ -1,0 +1,8 @@
+{
+  "label": "Chapter 2: Sensor Simulation and Integration",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Simulating LiDAR, cameras, IMUs, and other sensors with integration into robotic systems."
+  }
+}
